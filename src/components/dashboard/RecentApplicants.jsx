@@ -1,5 +1,5 @@
 
-import { Users, ArrowUpRight } from "lucide-react";
+import { Users, ArrowUpRight, AlertCircle } from "lucide-react";
 
 export default function RecentApplicants({
     applicants = [],

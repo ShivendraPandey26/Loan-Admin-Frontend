@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { Search, RefreshCw, Users, ExternalLink } from "lucide-react";
+import { Search, RefreshCw, Users, Trash2 } from "lucide-react";
 import api from "../lib/api";
 import { useNavigate } from "react-router-dom";
 import { UserPlus } from "lucide-react";
@@ -72,6 +72,32 @@ export default function Applicants() {
             .filter(Boolean)
             .some((value) => String(value).toLowerCase().includes(searchText));
     });
+
+    const handleDelete = async (applicantId) => {
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this applicant?"
+        );
+
+        if (!confirmed) return;
+
+        try {
+            await api.delete(`/applicants/${applicantId}`);
+
+            // Refresh the current page after deletion
+            const nextPage =
+                applicants.length === 1 && page > 1 ? page - 1 : page;
+
+            await fetchApplicants(nextPage);
+
+        } catch (err) {
+            console.error("Failed to delete applicant:", err);
+
+            alert(
+                err.response?.data?.message ||
+                "Unable to delete applicant. Please try again."
+            );
+        }
+    };
 
     return (
         <section className="mt-7 overflow-hidden rounded-xl border border-[#c5ccd6] bg-white shadow-sm">
@@ -162,13 +188,10 @@ export default function Applicants() {
 
             {/* Loading */}
             {loading ? (
-                <div className="flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center px-5 py-12 text-center">
                     <div className="h-7 w-7 animate-spin rounded-full border-[3px] border-[#dfe4eb] border-t-[#294f80]" />
                     <p className="mt-3 text-sm font-semibold text-[#344054]">
                         Loading applicants...
-                    </p>
-                    <p className="mt-1 text-xs text-[#667085]">
-                        Please wait while product details are being fetched.
                     </p>
                 </div>
             ) : filteredApplicants.length === 0 ? (
@@ -199,6 +222,7 @@ export default function Applicants() {
                                     <th className="px-6 py-4">Email</th>
                                     <th className="px-6 py-4">Phone</th>
                                     <th className="px-6 py-4">Status</th>
+                                    <th className="px-6 py-4 text-center">Actions</th>
                                 </tr>
                             </thead>
 
@@ -243,6 +267,22 @@ export default function Applicants() {
                                             >
                                                 {applicant.status || "Not specified"}
                                             </span>
+                                        </td>
+
+                                        <td className="px-6 py-5 text-center">
+                                            <button
+                                                type="button"
+                                                onClick={(event) => {
+                                                    event.stopPropagation();
+                                                    handleDelete(applicant._id);
+                                                }}
+                                                disabled={!applicant._id}
+                                                aria-label={`Delete ${applicant.fullName || "applicant"}`}
+                                                title="Delete applicant"
+                                                className="inline-flex items-center justify-center gap-2 rounded-lg border border-red-200 bg-white px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:border-red-300 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}

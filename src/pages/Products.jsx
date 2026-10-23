@@ -258,17 +258,11 @@ function Products() {
 
                         {loading && (
                             <tr>
-                                <td
-                                    colSpan={5}
-                                    className="px-5 py-12 text-center"
-                                >
+                                <td colSpan={5} className="px-5 py-12 text-center align-middle">
                                     <div className="flex flex-col items-center justify-center">
                                         <div className="h-7 w-7 animate-spin rounded-full border-[3px] border-[#dfe4eb] border-t-[#294f80]" />
                                         <p className="mt-3 text-sm font-semibold text-[#344054]">
-                                            Loading loan products
-                                        </p>
-                                        <p className="mt-1 text-xs text-[#667085]">
-                                            Please wait while product details are being fetched.
+                                            Loading loan products...
                                         </p>
                                     </div>
                                 </td>

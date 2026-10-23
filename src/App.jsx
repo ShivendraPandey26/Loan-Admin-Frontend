@@ -11,8 +11,6 @@ import {
   LayoutDashboard,
   Landmark,
   Users,
-  Search,
-  Bell,
   Menu,
   X,
   ChevronRight,
@@ -31,6 +29,7 @@ import EditProduct from "./pages/EditProduct";
 import DashboardStats from "./components/dashboard/DashboardStats";
 import RecentApplicants from "./components/dashboard/RecentApplicants";
 import ProductDetails from "./pages/ProductDetails";
+import Signup from "./pages/Signup";
 
 const navigation = [
   { label: "Overview", icon: LayoutDashboard },
@@ -124,7 +123,24 @@ function App() {
 
 
   if (!account) {
-    return <Login onLogin={handleLogin} />;
+    return (
+      <Routes>
+        <Route
+          path="/login"
+          element={<Login onLogin={handleLogin} />}
+        />
+
+        <Route
+          path="/signup"
+          element={<Signup />}
+        />
+
+        <Route
+          path="*"
+          element={<Login onLogin={handleLogin} />}
+        />
+      </Routes>
+    );
   }
 
   return (
@@ -164,7 +180,7 @@ function App() {
         element={<ProductDetails />}
       />
 
-      {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+      <Route path="/signup" element={<Signup />} />
     </Routes>
   );
 }
@@ -180,6 +196,8 @@ function Dashboard({ account, onLogout }) {
   const [dashboardStats, setDashboardStats] = useState({
     products: null,
     applicants: null,
+    eligible: null,
+    rejected: null
   });
 
   const [dashboardLoading, setDashboardLoading] = useState(true);
@@ -198,12 +216,14 @@ function Dashboard({ account, onLogout }) {
       setDashboardError("");
 
       try {
-        const [productsResponse, applicantsResponse] =
+        const [productsResponse, applicantsResponse, totalEligibleResponse, totalRejectedResponse] =
           await Promise.all([
             api.get("/products"),
             api.get("/applicants", {
               params: { page: 1, limit: 1 },
             }),
+            api.get("/applicants?status=Active"),
+            api.get("/applicants?status=Rejected")
           ]);
 
         const productData = productsResponse.data?.data;
@@ -213,6 +233,8 @@ function Dashboard({ account, onLogout }) {
 
         const applicantData = applicantsResponse.data?.data;
         const pagination = applicantsResponse.data?.pagination;
+        const totalEligible = totalEligibleResponse.data?.pagination?.total ?? 0;
+        const totalRejected = totalRejectedResponse.data?.pagination?.total ?? 0;
 
         if (!cancelled) {
           setDashboardStats({
@@ -225,6 +247,8 @@ function Dashboard({ account, onLogout }) {
               (Array.isArray(applicantData)
                 ? applicantData.length
                 : applicantData?.applicants?.length ?? 0),
+            eligible: totalEligible,
+            rejected: totalRejected
           });
         }
       } catch (error) {
@@ -437,7 +461,6 @@ function Dashboard({ account, onLogout }) {
               {account?.name || ""}
             </span>
           </div>
-
         </header>
 
         <main className="mx-auto max-w-360 px-4 py-7 sm:px-7 sm:py-9">

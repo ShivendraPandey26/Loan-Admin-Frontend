@@ -70,17 +70,22 @@ export default function ApplicantEditForm({
     return (
         <form
             onSubmit={onSubmit}
-            className="mt-5 rounded-md border border-[#e2e6ec] bg-[#fafbfc] p-4"
+            className="mt-5 rounded-xl border border-[#e2e6ec] bg-[#fafbfc] p-5 sm:p-6"
         >
-            <h3 className="mb-4 text-sm font-semibold text-[#202938]">
-                Edit Applicant Details
-            </h3>
+            <div className="mb-5 border-b border-[#e8ebf0] pb-4">
+                <h3 className="text-base font-semibold text-[#202938]">
+                    Edit Applicant Details
+                </h3>
+                <p className="mt-1 text-sm text-[#647084]">
+                    Update the applicant's personal and employment information.
+                </p>
+            </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {fields.map((field) => (
                     <label
                         key={field.name}
-                        className="text-xs font-medium text-[#536174]"
+                        className="block min-w-0 text-sm font-medium text-[#475467]"
                     >
                         {field.label}
                         <input
@@ -89,12 +94,12 @@ export default function ApplicantEditForm({
                             onChange={(event) =>
                                 updateField(field.name, event.target.value)
                             }
-                            className={inputClass}
+                            className={`${inputClass} mt-2 w-full rounded-lg border border-[#dfe4eb] bg-white px-3.5 py-3 text-sm text-[#202938] outline-none transition-colors placeholder:text-[#98a2b3] hover:border-[#cbd5e1] focus:border-[#294f80] focus:ring-2 focus:ring-[#294f80]/10`}
                         />
                     </label>
                 ))}
 
-                <label className="text-xs font-medium text-[#536174]">
+                <label className="block min-w-0 text-sm font-medium text-[#475467]">
                     Employment type
                     <select
                         required
@@ -102,14 +107,14 @@ export default function ApplicantEditForm({
                         onChange={(event) =>
                             updateField("employmentType", event.target.value)
                         }
-                        className={inputClass}
+                        className={`${inputClass} mt-2 w-full rounded-lg border border-[#dfe4eb] bg-white px-3.5 py-3 text-sm text-[#202938] outline-none transition-colors hover:border-[#cbd5e1] focus:border-[#294f80] focus:ring-2 focus:ring-[#294f80]/10`}
                     >
                         <option value="Salaried">Salaried</option>
                         <option value="Self-Employed">Self-Employed</option>
                     </select>
                 </label>
 
-                <label className="text-xs font-medium text-[#536174]">
+                <label className="block min-w-0 text-sm font-medium text-[#475467]">
                     Salary type
                     <select
                         required
@@ -117,7 +122,7 @@ export default function ApplicantEditForm({
                         onChange={(event) =>
                             updateField("salaryType", event.target.value)
                         }
-                        className={inputClass}
+                        className={`${inputClass} mt-2 w-full rounded-lg border border-[#dfe4eb] bg-white px-3.5 py-3 text-sm text-[#202938] outline-none transition-colors hover:border-[#cbd5e1] focus:border-[#294f80] focus:ring-2 focus:ring-[#294f80]/10`}
                     >
                         <option value="DAT">DAT</option>
                         <option value="Cash">Cash</option>
@@ -127,23 +132,29 @@ export default function ApplicantEditForm({
             </div>
 
             {editError && (
-                <p role="alert" className="mt-3 text-sm text-red-600">
+                <div
+                    role="alert"
+                    className="mt-5 rounded-lg border border-[#f2caca] bg-[#fff7f7] px-4 py-3 text-sm text-[#b42318]"
+                >
                     {editError}
-                </p>
+                </div>
             )}
 
             {editSuccess && (
-                <p role="status" className="mt-3 text-sm text-green-700">
+                <div
+                    role="status"
+                    className="mt-5 rounded-lg border border-[#c5e7d0] bg-[#f0fdf4] px-4 py-3 text-sm text-[#166534]"
+                >
                     {editSuccess}
-                </p>
+                </div>
             )}
 
-            <div className="mt-5 flex flex-wrap justify-end gap-2">
+            <div className="mt-6 flex flex-col-reverse gap-3 border-t border-[#e8ebf0] pt-5 sm:flex-row sm:justify-end">
                 <button
                     type="button"
                     onClick={onCancel}
                     disabled={saving}
-                    className="rounded-md border border-[#dfe4eb] px-4 py-2 text-sm hover:bg-gray-50 disabled:opacity-60"
+                    className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#dfe4eb] bg-white px-5 py-2.5 text-sm font-semibold text-[#344054] transition-colors hover:border-[#cbd5e1] hover:bg-[#f5f7fa] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                     Cancel
                 </button>
@@ -151,7 +162,7 @@ export default function ApplicantEditForm({
                 <button
                     type="submit"
                     disabled={saving}
-                    className="rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 disabled:opacity-60"
+                    className="inline-flex min-h-11 items-center justify-center rounded-lg bg-[#294f80] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#203f67] focus:outline-none focus:ring-2 focus:ring-[#294f80]/25 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                     {saving ? "Saving..." : "Save Changes"}
                 </button>

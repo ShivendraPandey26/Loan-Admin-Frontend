@@ -71,51 +71,58 @@ function Products() {
         }
     };
 
-    console.log(products);
-
-
     return (
         <section className="mt-7">
-            <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+
+            <div className="mb-6 flex flex-col justify-between gap-4 border-b border-[#cbd2dc] pb-5 sm:flex-row sm:items-center">
                 <div>
-                    <h2 className="text-[16px] font-semibold">Loan products</h2>
-                    <p className="mt-1 text-[12px] text-[#858c98]">
+                    <h2 className="text-[17px] font-semibold tracking-[-0.3px] text-[#182230]">
+                        Loan products
+                    </h2>
+                    <p className="mt-1.5 text-[12px] leading-5 text-[#667085]">
                         Product eligibility criteria configured in the system.
                     </p>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
                     <button
+                        type="button"
                         onClick={fetchProducts}
                         disabled={loading}
-                        className="inline-flex items-center justify-center gap-2 self-start rounded-md border border-[#dfe4eb] bg-white p-3 text-[12px] font-medium hover:bg-[#f8f9fb] disabled:opacity-50"
+                        aria-label="Refresh loan products"
+                        className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#c5ccd6] bg-white text-[#475467] transition-colors hover:bg-[#f3f5f8] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#64748b] focus-visible:ring-offset-2"
                     >
-                        <RefreshCw size={14} />
+                        <RefreshCw size={15} />
                     </button>
+
                     <button
                         type="button"
                         onClick={() => navigate("/products/new")}
-                        className="inline-flex items-center gap-2 rounded-md bg-blue-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-800"
+                        className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-[#244a7c] bg-[#294f80] px-4 text-[12px] font-semibold text-white transition-colors hover:bg-[#203f67] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#64748b] focus-visible:ring-offset-2"
                     >
-                        <Plus size={16} />
+                        <Plus size={15} />
                         Create Product
                     </button>
                 </div>
             </div>
 
-            <div className="mb-4 flex items-center gap-3 rounded-md border border-[#e0e4ea] bg-white px-3">
-                <Search size={16} className="shrink-0 text-[#858c98]" />
-                <input
-                    value={search}
-                    onChange={(event) => setSearch(event.target.value)}
-                    placeholder="Search loan products"
-                    aria-label="Search loan products"
-                    className="h-10 w-full bg-transparent text-[13px] outline-none placeholder:text-[#a0a6b0]"
-                />
+            <div className="mb-5 grid grid-cols-1 gap-3 rounded-lg border border-[#cbd2dc] bg-[#f8f9fb] p-3 sm:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_200px_180px]">
+                <div className="flex h-10 min-w-0 items-center gap-2.5 rounded-md border border-[#c5ccd6] bg-white px-3 transition-colors focus-within:border-[#64748b] focus-within:ring-2 focus-within:ring-[#e2e8f0]">
+                    <Search size={15} className="shrink-0 text-[#667085]" />
+                    <input
+                        value={search}
+                        onChange={(event) => setSearch(event.target.value)}
+                        placeholder="Search loan products"
+                        aria-label="Search loan products"
+                        className="h-full w-full min-w-0 bg-transparent text-[12px] text-[#202939] outline-none placeholder:text-[#98a2b3]"
+                    />
+                </div>
+
                 <select
                     value={employmentFilter}
                     onChange={(event) => setEmploymentFilter(event.target.value)}
-                    className="rounded-md border border-[#dfe4eb] bg-white px-3 py-2 mx-2 text-sm text-[#344054] outline-none focus:border-blue-500"
+                    aria-label="Filter by employment type"
+                    className="h-10 w-full rounded-md border border-[#c5ccd6] bg-white px-3 text-[12px] text-[#344054] outline-none transition-colors focus:border-[#64748b] focus:ring-2 focus:ring-[#e2e8f0]"
                 >
                     <option value="All">All employment types</option>
                     <option value="Salaried">Salaried</option>
@@ -125,7 +132,8 @@ function Products() {
                 <select
                     value={salaryFilter}
                     onChange={(event) => setSalaryFilter(event.target.value)}
-                    className="rounded-md border border-[#dfe4eb] bg-white px-3 py-2 mx-2 text-sm text-[#344054] outline-none focus:border-blue-500"
+                    aria-label="Filter by salary type"
+                    className="h-10 w-full rounded-md border border-[#c5ccd6] bg-white px-3 text-[12px] text-[#344054] outline-none transition-colors focus:border-[#64748b] focus:ring-2 focus:ring-[#e2e8f0]"
                 >
                     <option value="All">All salary types</option>
                     <option value="DAT">DAT</option>
@@ -133,6 +141,7 @@ function Products() {
                     <option value="Cheque">Cheque</option>
                 </select>
             </div>
+
 
             {error && (
                 <div
@@ -146,21 +155,21 @@ function Products() {
                 </div>
             )}
 
-            <div className="overflow-x-auto rounded-lg border border-[#e2e6ec] bg-white">
-                <table className="w-full min-w-180 border-collapse text-left">
-                    <thead className="bg-[#fafbfc]">
-                        <tr className="border-b border-[#e8ebf0] text-[11px] font-semibold uppercase tracking-[0.6px] text-[#7c8593]">
-                            <th className="px-5 py-3">Product</th>
-                            <th className="px-5 py-3">Age range</th>
-                            <th className="px-5 py-3">Min. credit score</th>
-                            <th className="px-5 py-3">Employment</th>
-                            <th className="px-5 py-3">Salary Types</th>
-                            <th className="px-5 py-3">Min. monthly salary</th>
-                            <th className="px-5 py-3 text-right">Actions</th>
+            <div className="overflow-x-auto rounded-lg border border-[#c5ccd6] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.04)]">
+                <table className="w-full min-w-225 border-collapse text-left">
+                    <thead className="bg-[#f1f4f8]">
+                        <tr className="border-b border-[#c5ccd6] text-[10px] font-semibold uppercase tracking-[0.8px] text-[#475467]">
+                            <th className="px-5 py-4">Product</th>
+                            <th className="px-5 py-4">Age range</th>
+                            <th className="px-5 py-4">Min. credit score</th>
+                            <th className="px-5 py-4">Employment</th>
+                            <th className="px-5 py-4">Salary types</th>
+                            <th className="px-5 py-4">Min. monthly salary</th>
+                            <th className="px-5 py-4 text-right">Actions</th>
                         </tr>
                     </thead>
 
-                    <tbody className="divide-y divide-[#edf0f3]">
+                    <tbody className="divide-y divide-[#dfe4eb]">
                         {!loading &&
                             filteredProducts.map((product) => (
                                 <tr
@@ -251,9 +260,17 @@ function Products() {
                             <tr>
                                 <td
                                     colSpan={5}
-                                    className="px-5 py-12 text-center text-[12px] text-[#858c98]"
+                                    className="px-5 py-12 text-center"
                                 >
-                                    Loading loan products...
+                                    <div className="flex flex-col items-center justify-center">
+                                        <div className="h-7 w-7 animate-spin rounded-full border-[3px] border-[#dfe4eb] border-t-[#294f80]" />
+                                        <p className="mt-3 text-sm font-semibold text-[#344054]">
+                                            Loading loan products
+                                        </p>
+                                        <p className="mt-1 text-xs text-[#667085]">
+                                            Please wait while product details are being fetched.
+                                        </p>
+                                    </div>
                                 </td>
                             </tr>
                         )}

@@ -74,27 +74,23 @@ export default function Applicants() {
     });
 
     return (
-        <section className="mt-7 overflow-hidden rounded-lg border border-[#e2e6ec] bg-white">
-            <div className="flex flex-col gap-4 border-b border-[#e8ebf0] px-5 py-4">
-                {/* Heading */}
-                <div>
-                    <h2 className="text-sm font-semibold text-[#202938]">
+        <section className="mt-7 overflow-hidden rounded-xl border border-[#c5ccd6] bg-white shadow-sm">
+            {/* Header */}
+            <div className="border-b border-[#d5dbe4] px-5 py-5 sm:px-6">
+                <div className="mb-5">
+                    <h2 className="text-lg font-semibold tracking-tight text-[#172033]">
                         Applicants
                     </h2>
-                    <p className="mt-1 text-xs text-[#858c98]">
+                    <p className="mt-1 text-sm text-[#647084]">
                         Review applicant details and eligibility status.
                     </p>
                 </div>
 
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                        {/* Search applicants */}
-                        <div className="flex min-w-0 items-center gap-2 rounded-md border border-[#dfe4eb] px-3 sm:w-64">
-                            <Search
-                                size={15}
-                                className="shrink-0 text-[#858c98]"
-                            />
+                <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+                    <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center">
+                        {/* Search */}
+                        <div className="flex min-w-0 items-center gap-3 rounded-lg border border-[#c5ccd6] bg-white px-3.5 transition-colors focus-within:border-[#294f80] focus-within:ring-2 focus-within:ring-[#294f80]/10 sm:w-72">
+                            <Search size={17} className="shrink-0 text-[#687589]" />
 
                             <input
                                 type="text"
@@ -102,11 +98,11 @@ export default function Applicants() {
                                 onChange={(event) => setSearch(event.target.value)}
                                 placeholder="Search applicants..."
                                 aria-label="Search applicants"
-                                className="w-full min-w-0 py-2 text-xs text-[#202938] outline-none placeholder:text-[#858c98]"
+                                className="w-full min-w-0 py-3 text-sm text-[#202938] outline-none placeholder:text-[#8791a1]"
                             />
                         </div>
 
-                        {/* Eligibility status filter */}
+                        {/* Eligibility filter */}
                         <select
                             value={statusFilter}
                             onChange={(event) => {
@@ -116,7 +112,7 @@ export default function Applicants() {
                                 fetchApplicants(1, value);
                             }}
                             aria-label="Filter by eligibility status"
-                            className="w-full rounded-md border border-[#dfe4eb] bg-white px-3 py-2.5 text-sm text-[#374151] outline-none focus:border-blue-600 sm:w-auto"
+                            className="w-full cursor-pointer rounded-lg border border-[#c5ccd6] bg-white px-3.5 py-3 text-sm text-[#293548] outline-none transition-colors focus:border-[#294f80] focus:ring-2 focus:ring-[#294f80]/10 sm:w-auto"
                         >
                             <option value="">All statuses</option>
                             <option value="Active">Active</option>
@@ -130,10 +126,10 @@ export default function Applicants() {
                             onClick={() => fetchApplicants(page)}
                             disabled={loading}
                             aria-label="Refresh applicants"
-                            className="inline-flex items-center justify-center rounded-md border border-[#dfe4eb] px-3 py-2.5 text-[#4b5565] transition-colors hover:bg-[#f6f8fa] disabled:cursor-not-allowed disabled:opacity-50"
+                            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-[#c5ccd6] bg-white text-[#40516a] transition-colors hover:bg-[#f3f6fa] hover:text-[#294f80] disabled:cursor-not-allowed disabled:opacity-50"
                         >
                             <RefreshCw
-                                size={15}
+                                size={17}
                                 className={loading ? "animate-spin" : ""}
                             />
                         </button>
@@ -141,92 +137,133 @@ export default function Applicants() {
                         <button
                             type="button"
                             onClick={() => navigate("/applicants/new")}
-                            className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-800"
+                            className="inline-flex h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-[#294f80] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#203f67] focus:outline-none focus:ring-2 focus:ring-[#294f80]/30 focus:ring-offset-2 sm:flex-none"
                         >
-                            <UserPlus size={16} />
+                            <UserPlus size={17} />
                             Create Applicant
                         </button>
                     </div>
                 </div>
             </div>
 
+            {/* Error */}
             {error && (
-                <div className="m-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[12px] text-red-700">
-                    {error}
+                <div className="mx-5 mt-5 flex flex-col gap-2 rounded-lg border border-[#efcaca] bg-[#fff7f7] px-4 py-3 text-sm text-[#b42318] sm:mx-6 sm:flex-row sm:items-center sm:justify-between">
+                    <p>{error}</p>
                     <button
+                        type="button"
                         onClick={fetchApplicants}
-                        className="ml-2 font-semibold underline"
+                        className="w-fit font-semibold underline underline-offset-4 hover:text-[#8f1d15]"
                     >
                         Try again
                     </button>
                 </div>
             )}
 
+            {/* Loading */}
             {loading ? (
-                <div className="py-16 text-center text-[13px] text-[#858c98]">
-                    Loading applicants...
+                <div className="flex flex-col items-center justify-center">
+                    <div className="h-7 w-7 animate-spin rounded-full border-[3px] border-[#dfe4eb] border-t-[#294f80]" />
+                    <p className="mt-3 text-sm font-semibold text-[#344054]">
+                        Loading applicants...
+                    </p>
+                    <p className="mt-1 text-xs text-[#667085]">
+                        Please wait while product details are being fetched.
+                    </p>
                 </div>
             ) : filteredApplicants.length === 0 ? (
+                /* Empty state */
                 <div className="flex flex-col items-center justify-center px-5 py-16 text-center">
-                    <Users size={22} className="text-[#8993a2]" />
-                    <p className="mt-3 text-[13px] font-medium text-[#344054]">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#d5dbe4] bg-[#f5f7fa]">
+                        <Users size={22} className="text-[#64748b]" />
+                    </div>
+
+                    <p className="mt-4 text-base font-semibold text-[#202938]">
                         {search ? "No matching applicants" : "No applicants found"}
                     </p>
-                    <p className="mt-1 text-[12px] text-[#858c98]">
+
+                    <p className="mt-1 max-w-sm text-sm leading-6 text-[#737f91]">
                         {search
                             ? "Try a different search term."
                             : "Applicant records will appear here when available."}
                     </p>
                 </div>
             ) : (
-                <div className="overflow-x-auto">
-                    <table className="w-full min-w-162.5 text-left">
-                        <thead className="bg-[#f8f9fb]">
-                            <tr className="text-[11px] font-medium uppercase tracking-wide text-[#7c8594]">
-                                <th className="px-5 py-3">Applicant</th>
-                                <th className="px-5 py-3">Email</th>
-                                <th className="px-5 py-3">Phone</th>
-                                <th className="px-5 py-3">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-[#edf0f4]">
-                            {filteredApplicants.map((applicant, index) => (
-                                <tr
-                                    key={applicant._id}
-                                    onClick={() => {
-                                        if (applicant._id) {
-                                            navigate(`/applicants/${applicant._id}`);
-                                        } else {
-                                            console.error("Applicant ID is missing:", applicant);
-                                        }
-                                    }}
-                                    className="cursor-pointer text-[12px] text-[#344054] hover:bg-[#f5f7fa]"
-                                >
-                                    <td className="px-5 py-4 font-medium capitalize">
-                                        {applicant.fullName || "Not provided"}
-                                    </td>
-                                    <td className="px-5 py-4">
-                                        {applicant.email || "Not provided"}
-                                    </td>
-                                    <td className="px-5 py-4">
-                                        {applicant.phone || "Not provided"}
-                                    </td>
-                                    <td className="px-5 py-4">
-                                        <span className="rounded-md bg-[#f0f3f7] px-2 py-1 text-[11px]">
-                                            {applicant.status || "Not specified"}
-                                        </span>
-                                    </td>
+                <>
+                    {/* Applicants table */}
+                    <div className="overflow-x-auto">
+                        <table className="w-full min-w-190 text-left">
+                            <thead className="border-b border-[#d5dbe4] bg-[#f5f7fa]">
+                                <tr className="text-xs font-semibold uppercase tracking-[0.07em] text-[#526075]">
+                                    <th className="px-6 py-4">Applicant</th>
+                                    <th className="px-6 py-4">Email</th>
+                                    <th className="px-6 py-4">Phone</th>
+                                    <th className="px-6 py-4">Status</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
 
+                            <tbody className="divide-y divide-[#e0e5ec]">
+                                {filteredApplicants.map((applicant) => (
+                                    <tr
+                                        key={applicant._id}
+                                        onClick={() => {
+                                            if (applicant._id) {
+                                                navigate(`/applicants/${applicant._id}`);
+                                            } else {
+                                                console.error(
+                                                    "Applicant ID is missing:",
+                                                    applicant
+                                                );
+                                            }
+                                        }}
+                                        className="cursor-pointer text-sm text-[#344054] transition-colors hover:bg-[#f5f8fc]"
+                                    >
+                                        <td className="px-6 py-5">
+                                            <span className="font-semibold capitalize text-[#202938]">
+                                                {applicant.fullName || "Not provided"}
+                                            </span>
+                                        </td>
 
-                    <div className="flex flex-col gap-3 border-t border-[#e8ebf0] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-                        <p className="text-xs text-[#64748b]">
-                            Total applicants: {totalApplicants}
-                            <span className="mx-2">|</span>
-                            Page {page} of {totalPages}
+                                        <td className="px-6 py-5 text-[#526075]">
+                                            {applicant.email || "Not provided"}
+                                        </td>
+
+                                        <td className="px-6 py-5 text-[#526075]">
+                                            {applicant.phone || "Not provided"}
+                                        </td>
+
+                                        <td className="px-6 py-5">
+                                            <span
+                                                className={`inline-flex items-center rounded-md border px-2.5 py-1 text-xs font-semibold ${applicant.status?.toLowerCase() === "active"
+                                                    ? "border-[#b7e4c7] bg-[#f0fdf4] text-[#15803d]"
+                                                    : applicant.status?.toLowerCase() === "rejected"
+                                                        ? "border-[#fecaca] bg-[#fef2f2] text-[#dc2626]"
+                                                        : "border-[#d5dbe4] bg-[#f5f7fa] text-[#526075]"
+                                                    }`}
+                                            >
+                                                {applicant.status || "Not specified"}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Pagination */}
+                    <div className="flex flex-col gap-4 border-t border-[#d5dbe4] bg-[#fbfcfe] px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                        <p className="text-sm text-[#526075]">
+                            Total applicants:{" "}
+                            <span className="font-semibold text-[#202938]">
+                                {totalApplicants}
+                            </span>
+                            <span className="mx-2 text-[#a0a9b7]">|</span>
+                            Page{" "}
+                            <span className="font-semibold text-[#202938]">{page}</span>
+                            {" "}of{" "}
+                            <span className="font-semibold text-[#202938]">
+                                {totalPages}
+                            </span>
                         </p>
 
                         <div className="flex items-center gap-2">
@@ -234,7 +271,7 @@ export default function Applicants() {
                                 type="button"
                                 onClick={() => fetchApplicants(page - 1)}
                                 disabled={loading || page <= 1}
-                                className="rounded-md border border-[#dfe4eb] px-3 py-2 text-sm text-[#374151] hover:bg-[#f6f8fa] disabled:cursor-not-allowed disabled:opacity-40"
+                                className="rounded-lg border border-[#c5ccd6] bg-white px-4 py-2.5 text-sm font-medium text-[#344054] transition-colors hover:bg-[#f0f3f8] disabled:cursor-not-allowed disabled:opacity-40"
                             >
                                 Previous
                             </button>
@@ -243,14 +280,13 @@ export default function Applicants() {
                                 type="button"
                                 onClick={() => fetchApplicants(page + 1)}
                                 disabled={loading || page >= totalPages}
-                                className="rounded-md border border-[#dfe4eb] px-3 py-2 text-sm text-[#374151] hover:bg-[#f6f8fa] disabled:cursor-not-allowed disabled:opacity-40"
+                                className="rounded-lg border border-[#c5ccd6] bg-white px-4 py-2.5 text-sm font-medium text-[#344054] transition-colors hover:bg-[#f0f3f8] disabled:cursor-not-allowed disabled:opacity-40"
                             >
                                 Next
                             </button>
                         </div>
                     </div>
-
-                </div>
+                </>
             )}
         </section>
     );

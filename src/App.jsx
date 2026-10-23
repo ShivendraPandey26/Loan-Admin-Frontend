@@ -16,9 +16,6 @@ import {
   Menu,
   X,
   ChevronRight,
-  ArrowUpRight,
-  CircleHelp,
-  Settings2,
   ShieldCheck,
   LogOut,
 } from "lucide-react";
@@ -108,13 +105,23 @@ function App() {
     setAccount(null);
   }
 
+
   if (checkingAuth) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#f7f8fa] text-sm text-[#687181]">
-        Checking your session...
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#f7f8fa] px-5">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#d5dbe4] border-t-[#294f80]" />
+
+        <p className="mt-4 text-[13px] font-semibold text-[#344054]">
+          Checking your session
+        </p>
+
+        <p className="mt-1 text-[12px] text-[#7b8493]">
+          Please wait while we verify your access.
+        </p>
       </div>
     );
   }
+
 
   if (!account) {
     return <Login onLogin={handleLogin} />;
@@ -363,46 +370,37 @@ function Dashboard({ account, onLogout }) {
           </nav>
         </div>
 
-        <div className="mt-auto border-t border-[#e9ebef] p-3">
-          <button
-            className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-[12px] text-[#667085] hover:bg-[#f6f7f9]"
-          >
-            <CircleHelp size={16} />
-            Help and support
-          </button>
 
-          <button
-            className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-[12px] text-[#667085] hover:bg-[#f6f7f9]"
-          >
-            <Settings2 size={16} />
-            Settings
-          </button>
-
-          <div className="mt-3 flex items-center gap-3 border-t border-[#e9ebef] px-2 pt-4">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e9edf4] text-[12px] font-semibold text-[#344b70]">
-              {(account.name || "Admin").slice(0, 2).toUpperCase()}
+        <div className="mt-auto border-t border-[#e5e7eb] px-3 py-4">
+          <div className="flex items-center gap-3 rounded-md border border-[#e5e7eb] bg-[#fafbfc] px-3 py-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-[#dce3ed] bg-[#edf2f8] text-[12px] font-semibold tracking-wide text-[#344b70]">
+              {(account?.name || "Admin").slice(0, 2).toUpperCase()}
             </div>
 
             <div className="min-w-0 flex-1">
-              <p className="truncate text-[12px] font-semibold">
-                {account.name || "Admin"}
+              <p className="truncate text-[13px] font-semibold leading-5 text-[#202939]">
+                {account?.name || "Admin"}
               </p>
-              <p className="mt-0.5 text-[11px] text-[#858c98]">
-                {account.role}
+              <p className="mt-0.5 truncate text-[11px] font-medium text-[#7b8493]">
+                {account?.role}
               </p>
             </div>
 
-            <ShieldCheck size={16} className="text-[#77869a]" />
+            <ShieldCheck
+              size={16}
+              className="shrink-0 text-[#7b8493]"
+            />
           </div>
 
           <button
             onClick={onLogout}
-            className="mt-2 flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-[12px] text-[#9b4038] hover:bg-[#fff5f4]"
+            className="mt-2 flex w-full items-center gap-2 rounded-md border border-transparent px-3 py-2.5 text-left text-[12px] font-medium text-[#a33c35] transition-colors duration-150 hover:border-[#f0d8d5] hover:bg-[#fff7f6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a33c35] focus-visible:ring-offset-2"
           >
             <LogOut size={15} />
-            Sign out
+            <span>Sign out</span>
           </button>
         </div>
+
       </aside>
 
       <div className="min-h-screen lg:pl-62">
@@ -430,56 +428,40 @@ function Dashboard({ account, onLogout }) {
             </span>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-4">
-            <div className="relative hidden sm:block">
-              <Search
-                size={15}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8b929e]"
-              />
-
-              <input
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                placeholder="Search workspace"
-                aria-label="Search workspace"
-                className="h-9 w-47.5 rounded-md border border-[#e0e4ea] bg-white pl-9 pr-3 text-[12px] outline-none placeholder:text-[#a0a6b0] focus:border-[#8194b0] focus:ring-2 focus:ring-[#233b63]/10"
-              />
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-[#d8e0eb] bg-[#edf2f8] text-[12px] font-semibold tracking-wide text-[#344b70]">
+              {(account?.name || "").slice(0, 2).toUpperCase()}
             </div>
 
-            <button
-              aria-label="Notifications"
-              className="relative rounded-md p-2 text-[#687181] hover:bg-[#f3f5f7]"
-            >
-              <Bell size={18} strokeWidth={1.8} />
-            </button>
-
-            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-[#dce2eb] bg-[#f0f3f8] text-[11px] font-semibold text-[#344b70]">
-              {(account.name || "Admin").slice(0, 2).toUpperCase()}
-            </div>
+            <span className="max-w-35 truncate text-[13px] font-semibold text-[#202939]">
+              {account?.name || ""}
+            </span>
           </div>
+
         </header>
 
         <main className="mx-auto max-w-360 px-4 py-7 sm:px-7 sm:py-9">
-          <div className="flex flex-col justify-between gap-4 border-b border-[#e4e7ec] pb-6 sm:flex-row sm:items-end">
-            <div>
-              <p className="mb-2 text-[11px] font-medium uppercase tracking-[1.2px] text-[#7b8492]">
+          <div className="flex flex-col justify-between gap-5 border-b border-[#e5e7eb] pb-6 sm:flex-row sm:items-end">
+            <div className="min-w-0">
+              <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-[1.5px] text-[#7b8493]">
                 Loan operations
               </p>
 
-              <h1 className="text-[25px] font-semibold tracking-[-0.8px] sm:text-[29px]">
+              <h1 className="text-[26px] font-semibold leading-tight tracking-[-0.7px] text-[#182230] sm:text-[30px]">
                 {activePage}
               </h1>
 
-              <p className="mt-2 max-w-xl text-[13px] leading-6 text-[#737c89]">
+              <p className="mt-2 max-w-xl text-[13px] leading-6 text-[#667085]">
                 {pageDescriptions[activePage]}
               </p>
             </div>
 
-            <div className="flex items-center gap-2 self-start rounded-md border border-[#dfe4eb] bg-white px-3 py-2 text-[11px] text-[#657080] sm:self-auto">
-              <span className="h-2 w-2 rounded-full bg-[#d69b42]" />
+            <div className="inline-flex w-fit shrink-0 items-center gap-2 rounded-md border border-[#e2e7ed] bg-white px-3 py-2 text-[11px] font-medium text-[#475467]">
+              <span className="h-2 w-2 rounded-full bg-[#32936f]" />
               Authenticated session
             </div>
           </div>
+
 
           {activePage === "Overview" && (
             <>

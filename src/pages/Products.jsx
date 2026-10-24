@@ -76,10 +76,10 @@ function Products() {
             <div className="mb-6 flex flex-col justify-between gap-4 border-b border-[#cbd2dc] pb-5 sm:flex-row sm:items-center">
                 <div>
                     <h2 className="text-[17px] font-semibold tracking-[-0.3px] text-[#182230]">
-                        Loan products
+                        Manage your loan products here.
                     </h2>
                     <p className="mt-1.5 text-[12px] leading-5 text-[#667085]">
-                        Product eligibility criteria configured in the system.
+                        You can create, edit, or delete products as needed.
                     </p>
                 </div>
 

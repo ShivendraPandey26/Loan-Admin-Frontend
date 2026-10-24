@@ -17,60 +17,92 @@ export default function Applicants() {
     const [totalPages, setTotalPages] = useState(1);
     const [totalApplicants, setTotalApplicants] = useState(0);
 
-    const fetchApplicants = async (pageNumber = page, selectedStatus = statusFilter) => {
+    const fetchApplicants = async (
+        pageNumber = page,
+        selectedStatus = statusFilter,
+        searchText = search
+    ) => {
         setLoading(true);
         setError("");
 
         try {
-            const response = await api.get("/applicants", {
-                params: {
-                    page: pageNumber,
-                    limit: 10,
-                    ...(selectedStatus && { status: selectedStatus }),
-                },
-            });
+            let response;
 
-            const records = response.data?.data;
-            const pagination = response.data?.pagination;
+            if (searchText.trim()) {
+                response = await api.get(
+                    `/applicants/${encodeURIComponent(searchText.trim())}`
+                );
 
-            if (!Array.isArray(records)) {
-                throw new Error("Invalid applicants response format.");
+                const result = response.data?.data;
+
+                const records = Array.isArray(result)
+                    ? result
+                    : result
+                        ? [result]
+                        : [];
+
+                setApplicants(records);
+                setPage(1);
+                setTotalPages(1);
+                setTotalApplicants(records.length);
+            } else {
+                response = await api.get("/applicants", {
+                    params: {
+                        page: pageNumber,
+                        limit: 10,
+                        ...(selectedStatus && {
+                            status: selectedStatus,
+                        }),
+                    },
+                });
+
+                const records = response.data?.data;
+                const pagination = response.data?.pagination;
+
+                if (!Array.isArray(records)) {
+                    throw new Error(
+                        "Invalid applicants response format."
+                    );
+                }
+
+                setApplicants(records);
+                setPage(pagination?.page ?? pageNumber);
+                setTotalPages(pagination?.totalPages ?? 1);
+                setTotalApplicants(
+                    pagination?.total ?? records.length
+                );
             }
-
-            setApplicants(records);
-            setPage(pagination?.page ?? pageNumber);
-            setTotalPages(pagination?.totalPages ?? 1);
-            setTotalApplicants(pagination?.total ?? records.length);
         } catch (err) {
             console.error("Failed to fetch applicants:", err);
 
-            setError(
-                err.response?.data?.message ||
-                err.message ||
-                "Unable to load applicants."
-            );
+            if (err.response?.status === 404 && searchText.trim()) {
+                setApplicants([]);
+                setPage(1);
+                setTotalPages(1);
+                setTotalApplicants(0);
+                setError("");
+            } else {
+                setError(
+                    err.response?.data?.message ||
+                    err.message ||
+                    "Unable to load applicants."
+                );
+            }
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchApplicants();
-    }, []);
+        const timer = setTimeout(() => {
+            fetchApplicants(1, statusFilter, search);
+        }, 700);
 
-    const filteredApplicants = applicants.filter((applicant) => {
-        const searchText = search.toLowerCase();
+        return () => clearTimeout(timer);
+    }, [search, statusFilter]);
 
-        return [
-            applicant.name,
-            applicant.fullName,
-            applicant.email,
-            applicant.phone,
-            applicant.status,
-        ]
-            .filter(Boolean)
-            .some((value) => String(value).toLowerCase().includes(searchText));
-    });
+
+    const filteredApplicants = applicants;
 
     const handleDelete = async (applicantId) => {
         const confirmed = window.confirm(
@@ -98,30 +130,22 @@ export default function Applicants() {
     };
 
     return (
-        <section className="mt-7 overflow-hidden rounded-xl border border-[#c5ccd6] bg-white shadow-sm">
-            {/* Header */}
-            <div className="border-b border-[#d5dbe4] px-5 py-5 sm:px-6">
-                <div className="mb-5">
-                    <h2 className="text-lg font-semibold tracking-tight text-[#172033]">
-                        Applicants
-                    </h2>
-                    <p className="mt-1 text-sm text-[#647084]">
-                        Review applicant details and eligibility status.
-                    </p>
-                </div>
+        <section className="mt-7 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+            <div className="border-b border-[#d5dbe4] px-5 sm:px-6">
 
-                <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+                <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between my-2">
                     <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center">
-                        {/* Search */}
                         <div className="flex min-w-0 items-center gap-3 rounded-lg border border-[#c5ccd6] bg-white px-3.5 transition-colors focus-within:border-[#294f80] focus-within:ring-2 focus-within:ring-[#294f80]/10 sm:w-72">
                             <Search size={17} className="shrink-0 text-[#687589]" />
-
                             <input
                                 type="text"
                                 value={search}
-                                onChange={(event) => setSearch(event.target.value)}
-                                placeholder="Search applicants..."
-                                aria-label="Search applicants"
+                                onChange={(event) => {
+                                    setSearch(event.target.value);
+                                    setPage(1);
+                                }}
+                                placeholder="Search by applicant name..."
+                                aria-label="Search by applicant name"
                                 className="w-full min-w-0 py-3 text-sm text-[#202938] outline-none placeholder:text-[#8791a1]"
                             />
                         </div>
@@ -132,8 +156,9 @@ export default function Applicants() {
                             onChange={(event) => {
                                 const value = event.target.value;
                                 setStatusFilter(value);
+                                setSearch("");
                                 setPage(1);
-                                fetchApplicants(1, value);
+                                fetchApplicants(1, value, "");
                             }}
                             aria-label="Filter by eligibility status"
                             className="w-full cursor-pointer rounded-lg border border-[#c5ccd6] bg-white px-3.5 py-3 text-sm text-[#293548] outline-none transition-colors focus:border-[#294f80] focus:ring-2 focus:ring-[#294f80]/10 sm:w-auto"
@@ -147,7 +172,7 @@ export default function Applicants() {
                     <div className="flex items-center gap-2">
                         <button
                             type="button"
-                            onClick={() => fetchApplicants(page)}
+                            onClick={() => fetchApplicants(page, statusFilter, search)}
                             disabled={loading}
                             aria-label="Refresh applicants"
                             className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-[#c5ccd6] bg-white text-[#40516a] transition-colors hover:bg-[#f3f6fa] hover:text-[#294f80] disabled:cursor-not-allowed disabled:opacity-50"
@@ -176,7 +201,7 @@ export default function Applicants() {
                     <p>{error}</p>
                     <button
                         type="button"
-                        onClick={fetchApplicants}
+                        onClick={() => fetchApplicants(1, statusFilter, search)}
                         className="w-fit font-semibold underline underline-offset-4 hover:text-[#8f1d15]"
                     >
                         Try again

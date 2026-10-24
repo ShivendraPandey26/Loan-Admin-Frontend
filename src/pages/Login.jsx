@@ -50,7 +50,6 @@ function Login({ onLogin }) {
     return (
         <main className="flex min-h-screen items-center justify-center bg-[#f7f8fa] px-4 py-10">
             <section className="w-full max-w-lg rounded-xl border border-slate-300 bg-white p-6 shadow-[0_4px_24px_rgba(15,23,42,0.04)] sm:p-8">
-                {/* Brand icon */}
                 <div className="mb-7 flex h-12 w-12 items-center justify-center rounded-lg border border-[#dce5f0] bg-[#f0f5fb] text-[#294f80]">
                     <LockKeyhole size={21} strokeWidth={1.8} />
                 </div>
@@ -71,7 +70,6 @@ function Login({ onLogin }) {
                     onSubmit={handleSubmit}
                     className="mt-7 grid grid-cols-1 gap-5 sm:grid-cols-1"
                 >
-                    {/* Email */}
                     <div>
                         <label
                             htmlFor="email"
@@ -90,8 +88,6 @@ function Login({ onLogin }) {
                             className="h-12 w-full rounded-lg border border-[#dfe4eb] bg-white px-3.5 text-sm text-[#202938] outline-none transition-colors placeholder:text-[#98a2b3] hover:border-[#cbd5e1] focus:border-[#294f80] focus:ring-2 focus:ring-[#294f80]/10"
                         />
                     </div>
-
-                    {/* Password */}
                     <div>
                         <label
                             htmlFor="password"
@@ -109,6 +105,7 @@ function Login({ onLogin }) {
                                 onChange={(event) => setPassword(event.target.value)}
                                 placeholder="Enter your password"
                                 required
+                                minLength={6}
                                 className="h-12 w-full rounded-lg border border-[#dfe4eb] bg-white px-3.5 pr-11 text-sm text-[#202938] outline-none transition-colors placeholder:text-[#98a2b3] hover:border-[#cbd5e1] focus:border-[#294f80] focus:ring-2 focus:ring-[#294f80]/10"
                             />
 
@@ -130,7 +127,6 @@ function Login({ onLogin }) {
                         </div>
                     )}
 
-                    {/* Sign in */}
                     <button
                         type="submit"
                         disabled={loading}
@@ -140,7 +136,6 @@ function Login({ onLogin }) {
                         {!loading && <ArrowRight size={17} />}
                     </button>
 
-                    {/* Viewer signup */}
                     <button
                         type="button"
                         onClick={() => navigate("/signup")}

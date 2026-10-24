@@ -68,7 +68,6 @@ export default function Signup() {
         try {
             setLoading(true);
 
-            // The backend assigns the Viewer role.
             await api.post("/auth/signup", {
                 name,
                 email,
@@ -98,7 +97,6 @@ export default function Signup() {
     return (
         <main className="flex min-h-screen items-center justify-center bg-[#f7f8fa] px-4 py-10">
             <section className="w-full max-w-2xl rounded-xl border border-slate-300 bg-white p-6 shadow-[0_4px_24px_rgba(15,23,42,0.04)] sm:p-8">
-                {/* Brand icon */}
                 <div className="mb-7 flex h-12 w-12 items-center justify-center rounded-lg border border-[#dce5f0] bg-[#f0f5fb] text-[#294f80]">
                     <UserPlus size={21} strokeWidth={1.8} />
                 </div>
@@ -115,7 +113,6 @@ export default function Signup() {
                     Register as a Viewer to access the loan administration workspace.
                 </p>
 
-                {/* Viewer role */}
                 <div className="mt-5 flex items-center gap-3 rounded-lg border border-[#dce5f0] bg-[#f7faff] px-3.5 py-3">
                     <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#e8eff8] text-[#294f80]">
                         <UserPlus size={18} />
@@ -131,12 +128,10 @@ export default function Signup() {
                     </div>
                 </div>
 
-                {/* Signup form: one responsive grid */}
                 <form
                     onSubmit={handleSubmit}
                     className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2"
                 >
-                    {/* Full name */}
                     <div>
                         <label
                             htmlFor="name"
@@ -160,7 +155,6 @@ export default function Signup() {
                         />
                     </div>
 
-                    {/* Email */}
                     <div>
                         <label
                             htmlFor="email"
@@ -183,7 +177,6 @@ export default function Signup() {
                         />
                     </div>
 
-                    {/* Password */}
                     <div>
                         <label
                             htmlFor="password"
@@ -232,7 +225,6 @@ export default function Signup() {
                         </p>
                     </div>
 
-                    {/* Confirm password */}
                     <div>
                         <label
                             htmlFor="confirmPassword"
@@ -300,7 +292,6 @@ export default function Signup() {
                         </div>
                     )}
 
-                    {/* Submit button */}
                     <button
                         type="submit"
                         disabled={loading}
@@ -314,7 +305,6 @@ export default function Signup() {
                     </button>
                 </form>
 
-                {/* Sign in link */}
                 <div className="mt-6 border-t border-[#e8ebf0] pt-5 text-center">
                     <p className="text-sm text-[#647084]">
                         Already have an account?{" "}

@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Search, Plus, RefreshCw, Landmark, Trash2 } from "lucide-react";
 import api from "../lib/api";
@@ -206,7 +205,7 @@ function Products() {
                                         {product.minAge} to {product.maxAge} years
                                     </td>
 
-                                    <td className="px-5 py-4 text-[#515b69]">
+                                    <td className="px-5 py-4 text-[#515b69] text-center">
                                         {product.minCreditScore}
                                     </td>
 
@@ -218,14 +217,14 @@ function Products() {
                                         {product.allowedSalaryTypes?.join(", ") || "Not set"}
                                     </td>
 
-                                    <td className="px-5 py-4 text-[#515b69]">
+                                    <td className="px-5 py-4 text-[#515b69] text-center">
                                         {Number(product.minSalary).toLocaleString("en-IN", {
                                             style: "currency",
                                             currency: "INR",
                                             maximumFractionDigits: 0,
                                         })}
                                     </td>
-                                    <td className="px-5 py-4 text-right">
+                                    <td className="px-5 py-4 text-center">
                                         <button
                                             type="button"
                                             onClick={(event) => {

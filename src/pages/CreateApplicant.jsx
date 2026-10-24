@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, UserPlus } from "lucide-react";
@@ -75,7 +74,6 @@ export default function CreateApplicant() {
 
     return (
         <div className="mx-auto max-w-5xl space-y-6">
-            {/* Back navigation */}
             <button
                 type="button"
                 onClick={() => navigate(-1)}

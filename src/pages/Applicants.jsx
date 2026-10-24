@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Search, RefreshCw, Users, Trash2 } from "lucide-react";
 import api from "../lib/api";
@@ -83,7 +82,6 @@ export default function Applicants() {
         try {
             await api.delete(`/applicants/${applicantId}`);
 
-            // Refresh the current page after deletion
             const nextPage =
                 applicants.length === 1 && page > 1 ? page - 1 : page;
 
@@ -195,7 +193,6 @@ export default function Applicants() {
                     </p>
                 </div>
             ) : filteredApplicants.length === 0 ? (
-                /* Empty state */
                 <div className="flex flex-col items-center justify-center px-5 py-16 text-center">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#d5dbe4] bg-[#f5f7fa]">
                         <Users size={22} className="text-[#64748b]" />
@@ -213,7 +210,6 @@ export default function Applicants() {
                 </div>
             ) : (
                 <>
-                    {/* Applicants table */}
                     <div className="overflow-x-auto">
                         <table className="w-full min-w-190 text-left">
                             <thead className="border-b border-[#d5dbe4] bg-[#f5f7fa]">

@@ -1,4 +1,3 @@
-
 import { Users, ArrowUpRight, AlertCircle } from "lucide-react";
 
 export default function RecentApplicants({

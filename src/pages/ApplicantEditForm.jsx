@@ -1,4 +1,3 @@
-
 export default function ApplicantEditForm({
     formData,
     setFormData,

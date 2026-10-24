@@ -6,7 +6,7 @@ The application provides an intuitive interface for administrators to manage loa
 
 ## Live Demo
 
-- **Frontend:** Add your deployed frontend URL here.
+- **Frontend:** https://loanadmins.vercel.app
 - **Backend API:** https://loan-admin-f9ut.onrender.com
 - **Frontend Repository:** https://github.com/ShivendraPandey26/Loan-Admin-Frontend
 - **Backend Repository:** https://github.com/ShivendraPandey26/Loan-Admin-Backend
